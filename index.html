@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Flujo - Control de Esterilización STERRAD VELOCITY™</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .hover-shadow:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .tooltip-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #0f172a;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 2px solid #3b82f6;
+            max-width: 28rem;
+            z-index: 50;
+            display: none;
+        }
+
+        .tooltip-container.active {
+            display: block;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        svg {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-4 md:p-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Premium Header -->
+            <div class="bg-gradient-to-r from-white to-blue-50 rounded-3xl shadow-2xl p-6 md:p-10 mb-8 border border-blue-200 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 opacity-5 rounded-full -mr-32 -mt-32"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-600 opacity-5 rounded-full -ml-24 -mb-24"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg">
+                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                                        Diagrama de Flujo - Control de Esterilización
+                                    </h1>
+                                    <p class="text-lg text-blue-700 font-semibold mt-1">
+                                        Sistema STERRAD VELOCITY™
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">
+                                    ISO 13485
+                                </span>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">
+                                    FDA Validated
+                                </span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold">
+                                    CE Marked
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-col gap-3">
+                            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg text-center">
+                                <div class="text-xs opacity-90">Tiempo Total</div>
+                                <div class="text-2xl">~15-20 min</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="zoomOut()" class="px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors font-bold text-sm">
+                                    Zoom -
+                                </button>
+                                <button onclick="zoomIn()" class="px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition-colors font-bold text-sm">
+                                    Zoom +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-600 p-4 rounded-lg">
+                        <p class="text-slate-700 text-sm leading-relaxed">
+                            <strong class="text-blue-900">Protocolo Estandarizado:</strong> Control de eficacia de esterilización mediante indicadores biológicos con peróxido de hidrógeno vaporizado. Cumple con normativas internacionales de esterilización hospitalaria y trazabilidad de procesos críticos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Legend -->
+            <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-8 mb-8 border border-slate-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-lg">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900">Simbología Estándar ISO</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border-2 border-blue-300 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-10 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full shadow-lg flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">I/F</span>
+                            </div>
+                            <div>
+                                <div class="font-black text-slate-900 text-sm">Terminal</div>
+                                <div class="text-xs text-slate-600">Inicio / Finalización</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-sky-50 to-sky-100 p-4 rounded-xl border-2 border-sky-300 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-10 bg-gradient-to-br from-sky-500 to-sky-600 rounded-lg shadow-lg flex items-center justify-center">
+                                <span class="text-white text-xs font-bold">PROC</span>
+                            </div>
+                            <div>
+                                <div class="font-black text-slate-900 text-sm">Proceso</div>
+                                <div class="text-xs text-slate-600">Acción / Operación</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl border-2 border-amber-400 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-16 h-10 relative">
+                                <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-amber-600 transform rotate-45 rounded-lg shadow-lg"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-white text-xs font-bold z-10">?</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="font-black text-slate-900 text-sm">Decisión</div>
+                                <div class="text-xs text-slate-600">Bifurcación lógica</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border-2 border-green-400 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-full shadow-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-black text-green-900 text-sm">Negativo</div>
+                                <div class="text-xs text-green-700">Proceso Exitoso</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-xl border-2 border-red-400 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-full shadow-lg flex items-center justify-center animate-pulse">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-black text-red-900 text-sm">Positivo</div>
+                                <div class="text-xs text-red-700">Falla Crítica</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl border-2 border-yellow-400 hover-shadow transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-full shadow-lg flex items-center justify-center">
+                                <span class="text-white text-xl font-bold">⚠</span>
+                            </div>
+                            <div>
+                                <div class="font-black text-yellow-900 text-sm">Advertencia</div>
+                                <div class="text-xs text-yellow-700">Error Detectado</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Flowchart -->
+            <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-12 border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <div id="flowchart-container">
+                        <svg id="flowchart" viewBox="0 0 1000 2600" class="w-full mx-auto" style="min-height: 1400px; max-width: 1000px;">
+                            <defs>
+                                <!-- Enhanced Arrow Marker -->
+                                <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+                                    <path d="M 0 0 L 12 6 L 0 12 L 3 6 Z" fill="#475569" />
+                                </marker>
+                                
+                                <!-- Premium Shadow -->
+                                <filter id="shadow">
+                                    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.25"/>
+                                </filter>
+                                
+                                <!-- Glow Effect -->
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+
+                                <!-- Gradient Definitions -->
+                                <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#2563eb" />
+                                    <stop offset="100%" stop-color="#1e40af" />
+                                </linearGradient>
+                                
+                                <linearGradient id="processGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#f0f9ff" />
+                                    <stop offset="100%" stop-color="#e0f2fe" />
+                                </linearGradient>
+                                
+                                <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#10b981" />
+                                    <stop offset="100%" stop-color="#059669" />
+                                </linearGradient>
+                                
+                                <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#ef4444" />
+                                    <stop offset="100%" stop-color="#dc2626" />
+                                </linearGradient>
+                                
+                                <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#f59e0b" />
+                                    <stop offset="100%" stop-color="#d97706" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- START -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('start')" onmouseleave="hideTooltip()">
+                                <ellipse cx="500" cy="60" rx="220" ry="50" fill="url(#blueGrad)" stroke="#1e40af" stroke-width="4" filter="url(#shadow)"/>
+                                <text x="500" y="55" text-anchor="middle" fill="white" font-size="18" font-weight="900" letter-spacing="1">
+                                    INICIO
+                                </text>
+                                <text x="500" y="75" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.95">
+                                    Proceso de Control de Esterilización
+                                </text>
+                            </g>
+
+                            <!-- Connection Line -->
+                            <path d="M 500 110 L 500 160" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- STEP 1 - Retirar IB -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step1')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="160" width="360" height="70" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="185" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    1. RETIRAR INDICADOR BIOLÓGICO
+                                </text>
+                                <text x="500" y="210" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Del esterilizador STERRAD o seleccionar control positivo
+                                </text>
+                            </g>
+
+                            <path d="M 500 230 L 500 280" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- DECISION 1 - Control Positivo -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('decision1')" onmouseleave="hideTooltip()">
+                                <path d="M 500 280 L 660 360 L 500 440 L 340 360 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="4" filter="url(#shadow)"/>
+                                <text x="500" y="350" text-anchor="middle" fill="#92400e" font-size="15" font-weight="900">
+                                    ¿ES CONTROL
+                                </text>
+                                <text x="500" y="375" text-anchor="middle" fill="#92400e" font-size="15" font-weight="900">
+                                    POSITIVO?
+                                </text>
+                            </g>
+
+                            <!-- NO Path -->
+                            <path d="M 500 440 L 500 490" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+                            <text x="520" y="465" fill="#1e293b" font-size="14" font-weight="900">NO</text>
+
+                            <!-- YES Path to Verify -->
+                            <path d="M 660 360 L 800 360 L 800 550 L 690 550" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                            <text x="740" y="350" fill="#1e293b" font-size="14" font-weight="900">SÍ</text>
+
+                            <!-- STEP 2 - Seleccionar Pocillo -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step2')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="490" width="360" height="70" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="515" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    2. SELECCIONAR POCILLO
+                                </text>
+                                <text x="500" y="540" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Pantalla táctil - 8 pocillos disponibles
+                                </text>
+                            </g>
+
+                            <path d="M 500 560 L 500 610" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- VERIFY Block -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('verify')" onmouseleave="hideTooltip()">
+                                <rect x="700" y="490" width="280" height="70" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="840" y="515" text-anchor="middle" fill="#92400e" font-size="14" font-weight="800">
+                                    ⚠ VERIFICACIÓN CRÍTICA
+                                </text>
+                                <text x="840" y="537" text-anchor="middle" fill="#b45309" font-size="11" font-weight="600">
+                                    Confirmar mismo número de lote
+                                </text>
+                                <text x="840" y="552" text-anchor="middle" fill="#b45309" font-size="11" font-weight="600">
+                                    que IB de prueba
+                                </text>
+                            </g>
+
+                            <!-- Path from Verify to Step 2 -->
+                            <path d="M 700 525 L 680 525" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                            <!-- STEP 3 - Tipo de IB -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step3')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="610" width="360" height="70" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="635" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    3. SELECCIONAR TIPO DE IB
+                                </text>
+                                <text x="500" y="660" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    PRUEBA (post-ciclo) o CONTROL (validación)
+                                </text>
+                            </g>
+
+                            <path d="M 500 680 L 500 730" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- STEP 4 - Escanear -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step4')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="730" width="360" height="70" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="755" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    4. ESCANEAR CÓDIGO DE BARRAS
+                                </text>
+                                <text x="500" y="780" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Lector integrado - Trazabilidad automática
+                                </text>
+                            </g>
+
+                            <path d="M 500 800 L 500 850" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- STEP 5 - Operador -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step5')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="850" width="360" height="65" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="875" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    5. INGRESAR OPERADOR
+                                </text>
+                                <text x="500" y="897" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Registro de responsable del proceso
+                                </text>
+                            </g>
+
+                            <path d="M 500 915 L 500 965" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- STEP 6 - Activar -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step6')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="965" width="360" height="65" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="990" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    6. ACTIVAR INDICADOR BIOLÓGICO
+                                </text>
+                                <text x="500" y="1012" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Ruptura de ampolla - Liberación de medio cultivo
+                                </text>
+                            </g>
+
+                            <path d="M 500 1030 L 500 1080" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- STEP 7 - Insertar -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('step7')" onmouseleave="hideTooltip()">
+                                <rect x="320" y="1080" width="360" height="65" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="1105" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    7. INSERTAR IB EN POCILLO
+                                </text>
+                                <text x="500" y="1127" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Colocación en el pocillo seleccionado
+                                </text>
+                            </g>
+
+                            <path d="M 500 1145 L 500 1205" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- INCUBATION - Enhanced -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('incubation')" onmouseleave="hideTooltip()">
+                                <rect x="260" y="1205" width="480" height="95" rx="12" fill="#dbeafe" stroke="#1e40af" stroke-width="4" filter="url(#shadow)"/>
+                                <rect x="270" y="1215" width="460" height="75" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                                <text x="500" y="1237" text-anchor="middle" fill="#1e40af" font-size="17" font-weight="900" letter-spacing="1">
+                                    ⏱ INCUBACIÓN AUTOMÁTICA
+                                </text>
+                                <text x="500" y="1260" text-anchor="middle" fill="#1e3a8a" font-size="14" font-weight="700">
+                                    Duración: ~15 minutos | Temp: 60°C ± 1°C
+                                </text>
+                                <text x="500" y="1280" text-anchor="middle" fill="#1e40af" font-size="12" font-weight="600">
+                                    Monitoreo continuo de fluorescencia en tiempo real
+                                </text>
+                            </g>
+
+                            <path d="M 500 1300 L 500 1370" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- DECISION 2 - Result -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('result')" onmouseleave="hideTooltip()">
+                                <path d="M 500 1370 L 660 1450 L 500 1530 L 340 1450 Z" fill="#fef3c7" stroke="#f59e0b" stroke-width="4" filter="url(#shadow)"/>
+                                <text x="500" y="1440" text-anchor="middle" fill="#92400e" font-size="15" font-weight="900">
+                                    LECTURA
+                                </text>
+                                <text x="500" y="1465" text-anchor="middle" fill="#92400e" font-size="15" font-weight="900">
+                                    AUTOMÁTICA
+                                </text>
+                            </g>
+
+                            <!-- Path to NEGATIVE -->
+                            <path d="M 340 1450 L 180 1450 L 180 1650 L 230 1650" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                            <text x="220" y="1440" fill="#1e293b" font-size="13" font-weight="900">NEGATIVO</text>
+
+                            <!-- Path to POSITIVE -->
+                            <path d="M 660 1450 L 820 1450 L 820 1650 L 770 1650" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                            <text x="755" y="1440" fill="#1e293b" font-size="13" font-weight="900">POSITIVO</text>
+
+                            <!-- Path to WARNING -->
+                            <path d="M 500 1530 L 500 1590" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+                            <text x="520" y="1560" fill="#1e293b" font-size="13" font-weight="900">ERROR</text>
+
+                            <!-- NEGATIVE RESULT -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('negative')" onmouseleave="hideTooltip()">
+                                <rect x="30" y="1620" width="240" height="110" rx="12" fill="#d1fae5" stroke="#059669" stroke-width="4" filter="url(#shadow)"/>
+                                <circle cx="150" cy="1660" r="15" fill="url(#greenGrad)"/>
+                                <path d="M 143 1660 L 148 1665 L 157 1653" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                <text x="150" y="1693" text-anchor="middle" fill="#065f46" font-size="15" font-weight="900">
+                                    NEGATIVO
+                                </text>
+                                <text x="150" y="1710" text-anchor="middle" fill="#047857" font-size="11" font-weight="700">
+                                    Pocillo VERDE
+                                </text>
+                                <text x="150" y="1725" text-anchor="middle" fill="#059669" font-size="11" font-weight="700">
+                                    ✓ Esterilización EXITOSA
+                                </text>
+                            </g>
+
+                            <!-- POSITIVE RESULT -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('positive')" onmouseleave="hideTooltip()">
+                                <rect x="730" y="1620" width="240" height="110" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="4" filter="url(#glow)"/>
+                                <circle cx="850" cy="1660" r="15" fill="url(#redGrad)"/>
+                                <path d="M 843 1653 L 857 1667 M 857 1653 L 843 1667" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                                <text x="850" y="1693" text-anchor="middle" fill="#991b1b" font-size="15" font-weight="900">
+                                    POSITIVO
+                                </text>
+                                <text x="850" y="1710" text-anchor="middle" fill="#b91c1c" font-size="11" font-weight="700">
+                                    Pocillo ROJO
+                                </text>
+                                <text x="850" y="1725" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="700">
+                                    ✗ FALLA - Alarma Sonora
+                                </text>
+                            </g>
+
+                            <!-- WARNING RESULT -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('warning')" onmouseleave="hideTooltip()">
+                                <rect x="380" y="1590" width="240" height="110" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="4" filter="url(#shadow)"/>
+                                <circle cx="500" cy="1630" r="15" fill="url(#yellowGrad)"/>
+                                <text x="500" y="1637" text-anchor="middle" fill="white" font-size="18" font-weight="900">⚠</text>
+                                <text x="500" y="1663" text-anchor="middle" fill="#92400e" font-size="15" font-weight="900">
+                                    ADVERTENCIA
+                                </text>
+                                <text x="500" y="1680" text-anchor="middle" fill="#b45309" font-size="11" font-weight="700">
+                                    Pocillo AMARILLO
+                                </text>
+                                <text x="500" y="1695" text-anchor="middle" fill="#d97706" font-size="11" font-weight="700">
+                                    Pocillo Bloqueado
+                                </text>
+                            </g>
+
+                            <!-- Paths to CONFIRM -->
+                            <path d="M 150 1730 L 150 1830 L 410 1830" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                            <path d="M 850 1730 L 850 1830 L 590 1830" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                            <path d="M 500 1700 L 500 1790" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                            <!-- CONFIRM -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('confirm')" onmouseleave="hideTooltip()">
+                                <rect x="340" y="1790" width="320" height="70" rx="10" fill="url(#processGrad)" stroke="#0ea5e9" stroke-width="3" filter="url(#shadow)"/>
+                                <text x="500" y="1815" text-anchor="middle" fill="#0c4a6e" font-size="15" font-weight="800">
+                                    8. CONFIRMAR RESULTADO
+                                </text>
+                                <text x="500" y="1840" text-anchor="middle" fill="#0369a1" font-size="13" font-weight="600">
+                                    Tocar pantalla o retirar IB - Registro automático
+                                </text>
+                            </g>
+
+                            <path d="M 500 1860 L 500 1920" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+
+                            <!-- END -->
+                            <g class="cursor-pointer" onmouseenter="showTooltip('end')" onmouseleave="hideTooltip()">
+                                <ellipse cx="500" cy="1970" rx="220" ry="50" fill="url(#blueGrad)" stroke="#1e40af" stroke-width="4" filter="url(#shadow)"/>
+                                <text x="500" y="1965" text-anchor="middle" fill="white" font-size="18" font-weight="900" letter-spacing="1">
+                                    FIN
+                                </text>
+                                <text x="500" y="1985" text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity="0.95">
+                                    Proceso Completado - Datos Registrados
+                                </text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Notes Section -->
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl shadow-2xl p-6 md:p-8 mt-8 text-white border border-slate-700">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">📋</span>
+                    </div>
+                    <h3 class="text-2xl font-black">Información Crítica del Proceso</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-br from-blue-900 to-blue-800 p-5 rounded-2xl border-2 border-blue-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-white font-black">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-blue-100 mb-2">Control Positivo</h4>
+                                <p class="text-sm text-blue-200 leading-relaxed">
+                                    El número de lote del control positivo <strong>DEBE</strong> coincidir exactamente con el IB de prueba para garantizar la validez del ensayo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-cyan-900 to-cyan-800 p-5 rounded-2xl border-2 border-cyan-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-white font-black">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-cyan-100 mb-2">Parámetros de Incubación</h4>
+                                <p class="text-sm text-cyan-200 leading-relaxed">
+                                    Temperatura: <strong>60°C ± 1°C</strong>. Tiempo: <strong>~15 minutos</strong>. Monitoreo continuo de fluorescencia para detección automática de crecimiento bacteriano.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-red-900 to-red-800 p-5 rounded-2xl border-2 border-red-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 animate-pulse">
+                                <span class="text-white font-black">!</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-red-100 mb-2">Resultado Positivo - CRÍTICO</h4>
+                                <p class="text-sm text-red-200 leading-relaxed">
+                                    Indica <strong>FALLA TOTAL</strong> del proceso de esterilización. Alarma sonora automática. <strong>DETENER</strong> uso del esterilizador y notificar inmediatamente a servicio técnico.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-green-900 to-green-800 p-5 rounded-2xl border-2 border-green-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-white font-black">✓</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-green-100 mb-2">Resultado Negativo - Exitoso</h4>
+                                <p class="text-sm text-green-200 leading-relaxed">
+                                    Indica que la esterilización fue <strong>EFECTIVA</strong>. No hay crecimiento bacteriano detectado. El equipo está funcionando correctamente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-yellow-900 to-yellow-800 p-5 rounded-2xl border-2 border-yellow-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-white font-black">⚠</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-yellow-100 mb-2">Advertencia - Error</h4>
+                                <p class="text-sm text-yellow-200 leading-relaxed">
+                                    Causas posibles: IB defectuoso, inserción incorrecta, fallo del lector. Repetir prueba con nuevo IB o contactar soporte técnico.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-purple-900 to-purple-800 p-5 rounded-2xl border-2 border-purple-600 hover-shadow transition-all">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                <span class="text-white font-black">📄</span>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-purple-100 mb-2">Trazabilidad y Registro</h4>
+                                <p class="text-sm text-purple-200 leading-relaxed">
+                                    Todos los resultados se registran automáticamente con fecha, hora, operador, lote de IB y parámetros del ciclo para cumplimiento normativo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Footer -->
+            <div class="mt-8 bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-6 text-center border border-slate-700">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-left">
+                        <p class="text-slate-300 text-sm font-semibold">
+                            Sistema STERRAD VELOCITY™
+                        </p>
+                        <p class="text-slate-400 text-xs mt-1">
+                            Control de Esterilización Hospitalaria | Protocolo Certificado
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold">ISO 13485</span>
+                        <span class="px-3 py-1 bg-green-600 text-white rounded-lg text-xs font-bold">FDA</span>
+                        <span class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs font-bold">CE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip Display -->
+    <div id="tooltip" class="tooltip-container">
+        <p id="tooltip-text" class="text-sm font-semibold leading-relaxed"></p>
+    </div>
+
+    <script>
+        // Tooltip data
+        const tooltips = {
+            start: "Proceso estandarizado de validación de esterilización hospitalaria",
+            step1: "El IB contiene esporas de Geobacillus stearothermophilus resistentes al peróxido de hidrógeno",
+            decision1: "Los controles positivos validan que el sistema de lectura funciona correctamente",
+            verify: "Verificación crítica: el lote debe coincidir para garantizar la validez del control",
+            step2: "El lector cuenta con 8 pocillos individuales con control de temperatura",
+            step3: "Tipo PRUEBA: post-esterilización | Tipo CONTROL: validación del sistema",
+            step4: "El código de barras contiene información del lote, fecha de fabricación y expiración",
+            step5: "Registro de trazabilidad para cumplimiento normativo y auditorías",
+            step6: "La activación rompe la ampolla interna liberando el medio de cultivo",
+            step7: "Inserción suave para evitar daños en el indicador biológico",
+            incubation: "Temperatura: 60°C ± 1°C. El sistema monitorea fluorescencia en tiempo real",
+            result: "Lectura automática basada en cambio de fluorescencia del medio de cultivo",
+            negative: "Ausencia de crecimiento bacteriano = proceso de esterilización efectivo",
+            positive: "Presencia de crecimiento bacteriano = FALLA CRÍTICA del ciclo",
+            warning: "Errores posibles: IB defectuoso, inserción incorrecta, fallo del lector",
+            confirm: "Documentación automática del resultado en el sistema de gestión",
+            end: "Ciclo completo. Datos almacenados para registro permanente"
+        };
+
+        let currentZoom = 1;
+
+        function showTooltip(key) {
+            const tooltip = document.getElementById('tooltip');
+            const tooltipText = document.getElementById('tooltip-text');
+            tooltipText.textContent = tooltips[key];
+            tooltip.classList.add('active');
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.remove('active');
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(2, currentZoom + 0.1);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(0.5, currentZoom - 0.1);
+            updateZoom();
+        }
+
+        function updateZoom() {
+            const container = document.getElementById('flowchart-container');
+            container.style.transform = `scale(${currentZoom})`;
+            container.style.transformOrigin = 'top center';
+        }
+    </script>
+</body>
+</html>
